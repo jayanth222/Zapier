@@ -4,17 +4,24 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "run": "npx tsc -b && node dist/index.js"
+    "start": "npx tsc -b && node dist/index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@prisma/client": "^6.12.0",
     "express": "^5.1.0",
-    "prisma": "^6.11.1"
+    "prisma": "^6.12.0"
   },
   "devDependencies": {
-    "@types/express": "^5.0.3"
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.0.14",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
   }
 }
