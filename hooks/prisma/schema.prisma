@@ -62,6 +62,8 @@ model Action {
 
   type              AvailableAction @relation(fields: [availableActionId], references: [id])
   availableActionId String
+
+  sortingOrder Int @default(0)
 }
 
 model AvailableAction {
