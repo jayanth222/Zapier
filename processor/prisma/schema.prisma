@@ -24,9 +24,7 @@ model User {
 }
 
 model Zap {
-  id   String @id @default(uuid())
-  name String @unique
-
+  id      String   @id @default(uuid())
   trigger Trigger?
 
   user   User @relation(fields: [userId], references: [id])
@@ -38,7 +36,8 @@ model Zap {
 }
 
 model Trigger {
-  id String @id @default(uuid())
+  id        String  @id @default(uuid())
+  triggerId String?
 
   type               AvailableTrigger @relation(fields: [availableTriggerId], references: [id])
   availableTriggerId String
@@ -49,7 +48,7 @@ model Trigger {
 
 model AvailableTrigger {
   id   String @id @default(uuid())
-  name String @unique
+  name String
 
   triggers Trigger[]
 }
@@ -66,7 +65,7 @@ model Action {
 
 model AvailableAction {
   id      String   @id @default(uuid())
-  name    String   @unique
+  name    String
   actions Action[]
 }
 
