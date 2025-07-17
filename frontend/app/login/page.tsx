@@ -20,8 +20,10 @@ export default function Signup() {
         email,
         password,
       })
-      .then(() => {
-        router.push("/");
+      .then((response) => {
+        // @ts-ignore
+        localStorage.setItem("token", response.data?.token);
+        router.push("/dashboard");
       })
       .catch((e) => {
         console.error(e);
@@ -61,9 +63,18 @@ export default function Signup() {
             />
             <PrimaryButton
               onClick={onClickHandler}
-              children="Get started for free"
+              children="Login"
               size="big"
             />
+            <div className="flex justify-center text-sm">
+              Don't have an account?
+              <div
+                className="cursor-pointer pl-1 text-blue-500 underline"
+                onClick={() => router.push("/signup")}
+              >
+                Signup
+              </div>
+            </div>
           </div>
         </div>
       </div>

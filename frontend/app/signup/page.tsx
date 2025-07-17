@@ -23,7 +23,7 @@ export default function Signup() {
         password,
       })
       .then(() => {
-        router.push("/");
+        router.push("/login");
       })
       .catch((e) => {
         console.error(e);
@@ -72,6 +72,15 @@ export default function Signup() {
               children="Get started for free"
               size="big"
             />
+            <div className="flex justify-center text-sm">
+              Already have an account?
+              <div
+                className="cursor-pointer pl-1 text-blue-500 underline"
+                onClick={() => router.push("/login")}
+              >
+                Login
+              </div>
+            </div>
           </div>
         </div>
       </div>
