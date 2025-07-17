@@ -35,11 +35,6 @@ export default function Signup() {
               type="email"
             />
             <InputField
-              onChange={(e) => setName(e.target.value)}
-              label="Name"
-              type="text"
-            />
-            <InputField
               onChange={(e) => setPassword(e.target.value)}
               label="Password"
               type="password"
