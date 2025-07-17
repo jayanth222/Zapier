@@ -24,10 +24,10 @@ model User {
 }
 
 model Zap {
-  id        String   @id @default(uuid())
-  name      String   @unique
-  triggerId String?
-  trigger   Trigger?
+  id   String @id @default(uuid())
+  name String @unique
+
+  trigger Trigger?
 
   user   User @relation(fields: [userId], references: [id])
   userId Int

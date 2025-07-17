@@ -29,4 +29,6 @@ app.post("/hooks/catch/:userId/:zapId", async (req, res) => {
     })
 })
 
-app.listen(3000)
+app.listen(3002, () => {
+    console.log("hooks service started in port 3002")
+})
