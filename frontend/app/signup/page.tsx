@@ -5,11 +5,31 @@ import { PrimaryButton } from "@/components/buttons/PrimaryButton";
 import { CheckFeatures } from "@/components/CheckFeatures";
 import { InputField } from "@/components/InputField";
 import { useState } from "react";
+import { PRIMARY_BACKEND_URL } from "../config";
+import { useRouter } from "next/navigation";
+import axios from "axios";
 
 export default function Signup() {
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
-  const [name, setName] = useState();
+  const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+
+  const onClickHandler = () => {
+    axios
+      .post(`${PRIMARY_BACKEND_URL}/api/v1/user/signup`, {
+        email,
+        name,
+        password,
+      })
+      .then(() => {
+        router.push("/");
+      })
+      .catch((e) => {
+        console.error(e);
+        alert("there was an error");
+      });
+  };
   return (
     <div className="flex h-screen flex-col">
       <Appbar />
@@ -33,18 +53,25 @@ export default function Signup() {
               onChange={(e) => setEmail(e.target.value)}
               label="Email"
               type="email"
+              value={email}
             />
             <InputField
               onChange={(e) => setName(e.target.value)}
               label="Name"
               type="text"
+              value={name}
             />
             <InputField
               onChange={(e) => setPassword(e.target.value)}
               label="Password"
               type="password"
+              value={password}
             />
-            <PrimaryButton children="Get started for free" size="big" />
+            <PrimaryButton
+              onClick={onClickHandler}
+              children="Get started for free"
+              size="big"
+            />
           </div>
         </div>
       </div>
