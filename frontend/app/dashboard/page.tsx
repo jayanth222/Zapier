@@ -96,9 +96,9 @@ const ZapTable = ({ zaps }: { zaps: Zap[] }) => {
     <div className="pt-8">
       <div className="flex gap-x-2 border-b-2 border-gray-200 pb-4 text-center">
         <div className="flex-2/12"></div>
-        <div className="flex-5/12 font-semibold">Name</div>
+        <div className="flex-2/12 font-semibold">Name</div>
         <div className="flex-2/12 font-semibold">Creatd At</div>
-        <div className="flex-2/12 font-semibold">WebHook URL</div>
+        <div className="flex-5/12 font-semibold">WebHook URL</div>
         <div className="flex-1/12"></div>
       </div>
       {zaps.map((z, i) => (
@@ -118,21 +118,16 @@ const ZapTable = ({ zaps }: { zaps: Zap[] }) => {
               />
             ))}
           </div>
-          <div className="flex flex-5/12 items-center">
+          <div className="flex flex-2/12 items-center">
             <div className="flex flex-1 justify-center">{z.name}</div>
           </div>
           <div className="flex flex-2/12 items-center">
             <div className="flex flex-1 justify-center">18 July</div>
           </div>
-          <div className="flex-2/12">
-            <LinkButton>
-              <a
-                href={`${HOOKS_URL}/hooks/catch/${z.userId}/${z.id}`}
-                target="_blank"
-              >
-                Click
-              </a>
-            </LinkButton>
+          <div className="flex-5/12">
+            <div className="text-sm">
+              {HOOKS_URL}/hooks/catch/{z.userId}/{z.id}
+            </div>
           </div>
           <div className="flex-1/12">
             <LinkButton
