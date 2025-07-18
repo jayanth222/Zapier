@@ -48,9 +48,9 @@ model Trigger {
 }
 
 model AvailableTrigger {
-  id   String @id @default(uuid())
-  name String @unique
-
+  id       String    @id @default(uuid())
+  name     String    @unique
+  imageURL String    @default("https://www.svgrepo.com/show/449305/trigger.svg")
   triggers Trigger[]
 }
 
@@ -67,9 +67,10 @@ model Action {
 }
 
 model AvailableAction {
-  id      String   @id @default(uuid())
-  name    String   @unique
-  actions Action[]
+  id       String   @id @default(uuid())
+  name     String   @unique
+  imageURL String   @default("https://www.shutterstock.com/image-vector/convenient-effective-action-simple-solution-600nw-2559463999.jpg")
+  actions  Action[]
 }
 
 model ZapRun {

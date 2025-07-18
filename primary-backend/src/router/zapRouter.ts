@@ -11,6 +11,7 @@ router.post("/", authMiddleware, async (req, res) => {
         const parsedData = ZapCreateSchema.safeParse(body);
 
         if (!parsedData.success) {
+            console.error(parsedData.error);
             return res.status(411).json({
                 message: "Incorrect Inputs"
             })
@@ -50,6 +51,7 @@ router.post("/", authMiddleware, async (req, res) => {
             zapId: zap.id
         })
     } catch (e) {
+        console.error(e)
         return res.status(400).json({
             message: "something went wrong"
         })

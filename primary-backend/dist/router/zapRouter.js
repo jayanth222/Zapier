@@ -18,8 +18,11 @@ const router = (0, express_1.Router)();
 router.post("/", middleware_1.authMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const body = req.body;
+        console.log("body");
+        console.log(body);
         const parsedData = types_1.ZapCreateSchema.safeParse(body);
         if (!parsedData.success) {
+            console.error(parsedData.error);
             return res.status(411).json({
                 message: "Incorrect Inputs"
             });
@@ -57,6 +60,7 @@ router.post("/", middleware_1.authMiddleware, (req, res) => __awaiter(void 0, vo
         });
     }
     catch (e) {
+        console.error(e);
         return res.status(400).json({
             message: "something went wrong"
         });
