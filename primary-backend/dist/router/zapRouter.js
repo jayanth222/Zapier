@@ -16,11 +16,11 @@ const types_1 = require("../types");
 const db_1 = require("../db");
 const router = (0, express_1.Router)();
 router.post("/", middleware_1.authMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     try {
         const body = req.body;
-        console.log("body");
-        console.log(body);
         const parsedData = types_1.ZapCreateSchema.safeParse(body);
+        console.log((_a = parsedData.data) === null || _a === void 0 ? void 0 : _a.actions[0].actionMetadata);
         if (!parsedData.success) {
             console.error(parsedData.error);
             return res.status(411).json({
@@ -44,13 +44,15 @@ router.post("/", middleware_1.authMiddleware, (req, res) => __awaiter(void 0, vo
                 userId: req.id,
                 trigger: {
                     create: {
-                        availableTriggerId: parsedData.data.availableTriggerId
+                        availableTriggerId: parsedData.data.availableTriggerId,
+                        metadata: parsedData.data.triggerMetadata
                     }
                 },
                 actions: {
                     create: parsedData.data.actions.map((a, i) => ({
                         availableActionId: a.availabelActionId,
-                        sortingOrder: i
+                        sortingOrder: i,
+                        metadata: a.actionMetadata
                     }))
                 }
             }

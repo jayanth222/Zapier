@@ -8,6 +8,8 @@ import axios from "axios";
 import { PRIMARY_BACKEND_URL } from "@/app/config";
 import { DarkButton } from "@/components/buttons/DarkButton";
 import { useRouter } from "next/navigation";
+import { EmailSelector } from "@/components/EmailSelector";
+import { SolanaSelector } from "@/components/SolanaSelector";
 
 export default function CreateZap() {
   const router = useRouter();
@@ -25,6 +27,7 @@ export default function CreateZap() {
       index: number;
       availableActionName: string;
       availableActionId: string;
+      metadata: any;
     }[]
   >([]);
   const [selectedModalIndex, setSelectedModalIndex] = useState<null | number>(
@@ -66,7 +69,7 @@ export default function CreateZap() {
                   triggerMetadata: {},
                   actions: selectedActions.map((a) => ({
                     availabelActionId: a.availableActionId,
-                    actionMetadata: {},
+                    actionMetadata: a.metadata,
                   })),
                 },
                 {
@@ -112,6 +115,7 @@ export default function CreateZap() {
                 index: a.length + 2,
                 availableActionId: "",
                 availableActionName: "",
+                metadata: {},
               },
             ]);
           }}
@@ -126,7 +130,12 @@ export default function CreateZap() {
           }
           index={selectedModalIndex}
           onSelect={(
-            props: null | { name: string; id: string; imageURL: string },
+            props: null | {
+              name: string;
+              id: string;
+              imageURL: string;
+              metadata: any;
+            },
           ) => {
             if (props === null) {
               setSelectedModalIndex(null);
@@ -146,6 +155,7 @@ export default function CreateZap() {
                   index: selectedModalIndex,
                   availableActionName: props.name,
                   availableActionId: props.id,
+                  metadata: props.metadata,
                 };
                 return newActions;
               });
@@ -166,9 +176,17 @@ function Modal({
   availableItems: { id: string; name: string; imageURL: string }[];
   index: number;
   onSelect: (
-    props: null | { name: string; id: string; imageURL: string },
+    props: null | { name: string; id: string; imageURL: string; metadata: any },
   ) => void;
 }) {
+  const [step, setStep] = useState(0);
+  const isTrigger = index == 1;
+  const [selectedAction, setSelectedAction] = useState<{
+    id: string;
+    name: string;
+    imageURL: string;
+  }>();
+
   return (
     <div className="fixed top-0 right-0 left-0 z-50 flex h-[calc(100%-1rem)] max-h-full w-full items-center justify-center bg-slate-100/50 md:inset-0">
       <div className="relative max-h-full w-full max-w-md p-4">
@@ -204,18 +222,63 @@ function Modal({
             </button>
           </div>
           <div className="space-y-4 p-4 md:p-5">
-            {availableItems.map((a) => (
-              <div
-                onClick={() => {
-                  onSelect({ id: a.id, name: a.name, imageURL: a.imageURL });
-                }}
-                key={a.id}
-                className="flex cursor-pointer justify-start rounded-md border border-gray-200 px-4 py-2 pl-32 text-xl capitalize hover:bg-slate-100"
-              >
-                <img src={a.imageURL} width={30} />
-                {a.name}
-              </div>
-            ))}
+            <div>
+              {step === 1 && selectedAction?.name === "email" && (
+                <EmailSelector
+                  setMetadata={(metadata) => {
+                    onSelect({
+                      ...selectedAction,
+                      metadata,
+                    });
+                  }}
+                />
+              )}
+            </div>
+
+            <div>
+              {step === 1 && selectedAction?.name === "send_solana" && (
+                <SolanaSelector
+                  setMetadata={(metadata) => {
+                    onSelect({
+                      ...selectedAction,
+                      metadata,
+                    });
+                  }}
+                />
+              )}
+            </div>
+            <div>
+              {step === 0 && (
+                <div>
+                  {availableItems.map((a) => (
+                    <div
+                      onClick={() => {
+                        if (isTrigger) {
+                          onSelect({
+                            id: a.id,
+                            name: a.name,
+                            imageURL: a.imageURL,
+                            metadata: {},
+                          });
+                        } else {
+                          setStep((s) => s + 1);
+                          setSelectedAction({
+                            id: a.id,
+                            name: a.name,
+                            imageURL: a.imageURL,
+                          });
+                        }
+                      }}
+                      key={a.id}
+                      className="flex cursor-pointer justify-start rounded-md border border-gray-200 px-4 py-2 pl-32 text-xl capitalize hover:bg-slate-100"
+                    >
+                      <img src={a.imageURL} width={30} />
+                      {a.name}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>

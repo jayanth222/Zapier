@@ -38,7 +38,8 @@ model Zap {
 }
 
 model Trigger {
-  id String @id @default(uuid())
+  id       String @id @default(uuid())
+  metadata Json   @default("{}")
 
   type               AvailableTrigger @relation(fields: [availableTriggerId], references: [id])
   availableTriggerId String
@@ -55,7 +56,8 @@ model AvailableTrigger {
 }
 
 model Action {
-  id String @id @default(uuid())
+  id       String @id @default(uuid())
+  metadata Json   @default("{}")
 
   Zap   Zap    @relation(fields: [zapId], references: [id])
   zapId String
