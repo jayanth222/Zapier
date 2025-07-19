@@ -27,7 +27,7 @@ function main() {
             yield producer.send({
                 topic: 'zap-events',
                 messages: pendingRows.map((r) => ({
-                    value: r.zapRunId
+                    value: JSON.stringify({ zapRunId: r.zapRunId, stage: 0 })
                 }))
             });
             yield prismaClient.zapRunOutBox.deleteMany({

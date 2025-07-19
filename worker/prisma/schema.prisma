@@ -1,0 +1,93 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       Int     @id @default(autoincrement())
+  email    String  @unique
+  name     String?
+  password String?
+
+  zap Zap[]
+}
+
+model Zap {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  triggerId String?
+  trigger   Trigger?
+
+  user   User @relation(fields: [userId], references: [id])
+  userId Int
+
+  actions Action[]
+
+  zapRuns ZapRun[]
+}
+
+model Trigger {
+  id       String @id @default(uuid())
+  metadata Json   @default("{}")
+
+  type               AvailableTrigger @relation(fields: [availableTriggerId], references: [id])
+  availableTriggerId String
+
+  zap   Zap    @relation(fields: [zapId], references: [id])
+  zapId String @unique
+}
+
+model AvailableTrigger {
+  id       String    @id @default(uuid())
+  name     String    @unique
+  imageURL String    @default("https://www.svgrepo.com/show/449305/trigger.svg")
+  triggers Trigger[]
+}
+
+model Action {
+  id       String @id @default(uuid())
+  metadata Json   @default("{}")
+
+  Zap   Zap    @relation(fields: [zapId], references: [id])
+  zapId String
+
+  type              AvailableAction @relation(fields: [availableActionId], references: [id])
+  availableActionId String
+
+  sortingOrder Int @default(0)
+}
+
+model AvailableAction {
+  id       String   @id @default(uuid())
+  name     String   @unique
+  imageURL String   @default("https://www.shutterstock.com/image-vector/convenient-effective-action-simple-solution-600nw-2559463999.jpg")
+  actions  Action[]
+}
+
+model ZapRun {
+  id       String @id @default(uuid())
+  metadata Json
+
+  zapId String
+  zap   Zap    @relation(fields: [zapId], references: [id])
+
+  zapRunOutBox ZapRunOutBox?
+}
+
+model ZapRunOutBox {
+  id String @id @default(uuid())
+
+  zapRunId String @unique
+  zapRun   ZapRun @relation(fields: [zapRunId], references: [id])
+}
