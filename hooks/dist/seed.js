@@ -20,11 +20,7 @@ function main() {
         yield prismaClient.$transaction((tx) => __awaiter(this, void 0, void 0, function* () {
             const user = yield tx.user.upsert({
                 where: { email: 'jayanthaitha@gmail.com' },
-                update: {
-                    email: 'jayanthaitha@gmail.com',
-                    name: 'Jayanth',
-                    password: yield bcrypt_1.default.hash("1234567890", 10)
-                },
+                update: {},
                 create: {
                     email: 'jayanthaitha@gmail.com',
                     name: 'Jayanth',
@@ -53,14 +49,6 @@ function main() {
                 create: {
                     name: 'send_solana',
                     imageURL: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVJ3fp_jVDHChLAR96XuRAMVjMrYfk3MCuqA&s'
-                }
-            });
-            const zap = yield tx.zap.upsert({
-                where: { name: 'zap 1' },
-                update: {},
-                create: {
-                    name: "zap 1",
-                    userId: user.id
                 }
             });
         }));
