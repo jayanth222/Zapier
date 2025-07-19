@@ -2,6 +2,8 @@ import { Kafka } from "kafkajs"
 import { PrismaClient } from "../src/generated/prisma";
 import { JsonObject } from "./generated/prisma/runtime/library";
 import { parse } from "./parser";
+import { sendEmail } from "./email";
+import { sendSolana } from "./solana";
 
 const KAFKA_TOPIC = "zap-events"
 
@@ -27,9 +29,9 @@ async function main() {
                 console.log({
                     partition,
                     offset: message.offset,
-                    value: message.value.toString(),
+                    value: message.value?.toString(),
                 })
-                const parsedData = JSON.parse(message.value.toString());
+                const parsedData = JSON.parse((message.value || "").toString());
                 const zapRunId = parsedData.zapRunId;
                 const stage = parsedData.stage
                 let zapRunDetails;
@@ -63,16 +65,17 @@ async function main() {
                 }
                 const zapRunMetadata = zapRunDetails?.metadata
                 if (currentAction.type.name.toLowerCase() === "email") {
-                    const body = parse((currentAction.metadata as JsonObject).body as string, zapRunMetadata);
                     const to = parse((currentAction.metadata as JsonObject).email as string, zapRunMetadata);
-
+                    const body = parse((currentAction.metadata as JsonObject).body as string, zapRunMetadata);
+                    sendEmail(to, body)
                 }
                 if (currentAction.type.name.toLowerCase() === "send_solana") {
                     const address = parse((currentAction.metadata as JsonObject).address as string, zapRunMetadata);
                     const amount = parse((currentAction.metadata as JsonObject).amount as string, zapRunMetadata);
+                    sendSolana(address, amount)
                 }
 
-                await new Promise(r => setTimeout(r, 5000))
+                // await new Promise(r => setTimeout(r, 5000))
 
                 const lastStage = (zapRunDetails?.zap.actions.length || 1) - 1
 
