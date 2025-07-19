@@ -67,7 +67,7 @@ async function main() {
                 if (currentAction.type.name.toLowerCase() === "email") {
                     const to = parse((currentAction.metadata as JsonObject).email as string, zapRunMetadata);
                     const body = parse((currentAction.metadata as JsonObject).body as string, zapRunMetadata);
-                    sendEmail(to, body)
+                    await sendEmail(to, body)
                 }
                 if (currentAction.type.name.toLowerCase() === "send_solana") {
                     const address = parse((currentAction.metadata as JsonObject).address as string, zapRunMetadata);

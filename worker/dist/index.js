@@ -72,7 +72,7 @@ function main() {
                     if (currentAction.type.name.toLowerCase() === "email") {
                         const to = (0, parser_1.parse)(currentAction.metadata.email, zapRunMetadata);
                         const body = (0, parser_1.parse)(currentAction.metadata.body, zapRunMetadata);
-                        (0, email_1.sendEmail)(to, body);
+                        yield (0, email_1.sendEmail)(to, body);
                     }
                     if (currentAction.type.name.toLowerCase() === "send_solana") {
                         const address = (0, parser_1.parse)(currentAction.metadata.address, zapRunMetadata);
