@@ -221,7 +221,7 @@ function Modal({
               <span className="sr-only">Close modal</span>
             </button>
           </div>
-          <div className="space-y-4 p-4 md:p-5">
+          <div className="space-y-4 p-4">
             <div>
               {step === 1 && selectedAction?.name === "email" && (
                 <EmailSelector
@@ -270,7 +270,7 @@ function Modal({
                         }
                       }}
                       key={a.id}
-                      className="flex cursor-pointer justify-start rounded-md border border-gray-200 px-4 py-2 pl-32 text-xl capitalize hover:bg-slate-100"
+                      className="m-2 flex cursor-pointer justify-start rounded-md border border-gray-200 px-4 py-2 pl-32 text-xl capitalize hover:bg-slate-100"
                     >
                       <img src={a.imageURL} width={30} />
                       {a.name}
